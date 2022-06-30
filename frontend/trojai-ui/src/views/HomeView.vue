@@ -1,13 +1,25 @@
 <template>
   <div class="home">
-    {{ data }}
+    <h3 v-if="books && booksread">Books</h3>
+    <ul>
+      <li v-for="book in books" :key="book.id">
+        {{ `${book.title} - ${book.price} - ${bookreview(book.id)}` }}
+      </li>
+    </ul>
+
+    <h3 v-if="readers">Readers</h3>
+    <ul v-if="booksread">
+      <li v-for="reader in readers" :key="reader.id">
+        {{ `${reader.name} has read: ${booksread.filter((b) => b.reader === reader.id).length} book(s)` }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
-import get_data from "@/services/api-service"
-import HelloWorld from "@/components/HelloWorld.vue" // @ is an alias to /src
+import { Component, Vue } from 'vue-property-decorator'
+import { get_books, get_readers, get_read_books, get_reader_books } from '@/services/api-service'
+import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
 
 @Component({
   components: {
@@ -15,10 +27,42 @@ import HelloWorld from "@/components/HelloWorld.vue" // @ is an alias to /src
   },
 })
 export default class HomeView extends Vue {
-  data = "test"
+  books = 'test'
+  readers = null
+  booksread: any[] = []
+
+  bookreview(book_id: number) {
+    if (book_id) {
+      let booksread = this.booksread.filter((book) => {
+        return book.book === book_id
+      })
+      return booksread[0].review
+    }
+  }
+
+  readersbooks = async (readerId: number) => {
+    if (readerId) {
+      // let readerbooks: any[] = []
+      let books = await get_reader_books(readerId)
+      console.log(books)
+      // return get_reader_books(readerId).then((response) => {
+      //   console.log(response.length)
+      //   return response
+      // })
+      // console.log(readerbooks.length)
+      // return readerbooks.length
+    }
+  }
+
   mounted() {
-    get_data("http://localhost:8000/").then((x) => {
-      this.data = x.message
+    get_read_books().then((booksread) => {
+      this.booksread = booksread
+    })
+    get_books().then((books) => {
+      this.books = books
+    })
+    get_readers().then((readers) => {
+      this.readers = readers
     })
   }
 }
