@@ -1,0 +1,49 @@
+version: '3.1'
+volumes:
+  trojai_db: null
+networks:
+  demo:
+    name: demo
+services:
+
+  postgresql:
+    image: postgres
+    volumes:
+      - trojai_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+    networks:
+      - demo
+    mem_limit: 1G
+
+  trojai_server:
+    image: trojai-api:latest
+    environment:
+      PG_USER: user
+      PG_PASSWORD: example
+      PG_DB: trojai
+      PG_HOST: postgres
+      PG_PORT: 5432
+    ports:
+      - "9999:80"
+    networks:
+      - demo
+    depends_on:
+      - postgresql
+    mem_limit: 1G
+
+  trojai_client:
+    image: trojai-client:latest
+    environment:
+      API_URL: http://trojai-api:9999
+    ports:
+      - "80:80"
+    networks:
+      - demo
+    depends_on:
+      - postgresql
+      - trojai_server
+    mem_limit: 1G
