@@ -1,8 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from db import engine, SQLModel, _create_demo_data, get_engine
 from sqlmodel import Session, select
-from models import Book, Reader, BookReader
+
+from db import SQLModel, _create_demo_data, engine, get_engine
+
+from models import Book, BookReader, Reader
 
 SQLModel.metadata.create_all(get_engine())
 

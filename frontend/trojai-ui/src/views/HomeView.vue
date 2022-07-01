@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { get_books, get_readers, get_read_books, get_reader_books } from '@/services/api-service'
+import { get_books, get_readers, get_read_books } from '@/services/api-service'
 import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
 
 @Component({
@@ -37,20 +37,6 @@ export default class HomeView extends Vue {
         return book.book === book_id
       })
       return booksread[0].review
-    }
-  }
-
-  readersbooks = async (readerId: number) => {
-    if (readerId) {
-      // let readerbooks: any[] = []
-      let books = await get_reader_books(readerId)
-      console.log(books)
-      // return get_reader_books(readerId).then((response) => {
-      //   console.log(response.length)
-      //   return response
-      // })
-      // console.log(readerbooks.length)
-      // return readerbooks.length
     }
   }
 

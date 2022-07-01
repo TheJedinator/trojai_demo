@@ -1,32 +1,28 @@
 import axios from 'axios'
-
-const get_data = async (url: string) => {
-  const response = await axios.get(url)
-  return response.data
-}
+const base_url = process.env.API_URL || 'http://127.0.0.1:9999'
 
 const get_books = async () => {
-  const url = 'http://127.0.0.1:8000/books'
+  const url = `${base_url}/books`
   const response = await axios.get(url)
   return response.data
 }
 
 const get_readers = async () => {
-  const url = 'http://127.0.0.1:8000/readers'
+  const url = `${base_url}/readers`
   const response = await axios.get(url)
   return response.data
 }
 
 const get_reader_books = async (reader_id: number) => {
-  const url = `http://127.0.0.1:8000/readers/${reader_id}/books`
+  const url = `${base_url}/readers/${reader_id}/books`
   const response = await axios.get(url)
   return response.data
 }
 
 const get_read_books = async () => {
-  const url = `http://127.0.0.1:8000/readbooks`
+  const url = `${base_url}/readbooks`
   const response = await axios.get(url)
   return response.data
 }
 
-export { get_data, get_books, get_reader_books, get_readers, get_read_books }
+export { get_books, get_reader_books, get_readers, get_read_books }

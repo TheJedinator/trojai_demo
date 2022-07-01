@@ -19,14 +19,10 @@ services:
       - demo
     mem_limit: 1G
 
-  trojai_server:
-    image: trojai-api:latest
+  trojai-server:
+    image: jedp/jedptrojaidemo_api:latest
     environment:
-      PG_USER: user
-      PG_PASSWORD: example
-      PG_DB: trojai
-      PG_HOST: postgres
-      PG_PORT: 5432
+      DB_CONN: "postgresql://user:example@postgresql:5432/trojai"
     ports:
       - "9999:80"
     networks:
@@ -35,10 +31,10 @@ services:
       - postgresql
     mem_limit: 1G
 
-  trojai_client:
-    image: trojai-client:latest
+  trojai-client:
+    image: jedp/trojaidemo_client:latest
     environment:
-      API_URL: http://trojai-api:9999
+      API_URL: http://trojai-server
     ports:
       - "80:80"
     networks:

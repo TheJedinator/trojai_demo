@@ -1,15 +1,17 @@
 import os
+
 from fastapi import HTTPException
-from sqlmodel import SQLModel, create_engine
-from models import Book, Reader, BookReader
-from sqlmodel import Session, select
+from sqlmodel import Session, SQLModel, create_engine, select
+
+from models import Book, BookReader, Reader
 
 engine = None
 
 
 def get_engine():
     global engine
-    postgres_db = os.environ.get("POSTGRES_DB", "postgresql://user:example@localhost:5432/trojai")
+    postgres_db = os.environ.get("DB_CONN", "postgresql://user:example@localhost:5432/trojai")
+    print(postgres_db)
     try:
         if engine is None:
 
