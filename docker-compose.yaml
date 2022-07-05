@@ -20,7 +20,7 @@ services:
     mem_limit: 1G
 
   trojai-server:
-    image: jedp/jedptrojaidemo_api:latest
+    image: jedp/trojaidemo_api:latest
     environment:
       DB_CONN: "postgresql://user:example@postgresql:5432/trojai"
     ports:
